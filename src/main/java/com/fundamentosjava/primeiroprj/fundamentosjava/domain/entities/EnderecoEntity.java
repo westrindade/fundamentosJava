@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Table(name = "tb_endereco")
 @Entity
-public class EndecoEntity {
+public class EnderecoEntity {
     @Id
     @Column(name = "cd_cep", unique = true)
     private String cep;
@@ -22,9 +22,9 @@ public class EndecoEntity {
     @JoinColumn(name = "id_pessoa")
     private PessoaEntity pessoa;
 
-    public EndecoEntity(){}
+    public EnderecoEntity(){}
 
-    public EndecoEntity(String cep, PessoaEntity pessoa) throws Exception {
+    public EnderecoEntity(String cep, PessoaEntity pessoa) throws Exception {
         if (cep == null){
             throw new Exception("Cep não informado");
         }

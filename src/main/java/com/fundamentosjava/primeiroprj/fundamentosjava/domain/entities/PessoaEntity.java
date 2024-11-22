@@ -24,7 +24,7 @@ public class PessoaEntity {
     private int idade;
 
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<EndecoEntity> enderecos = new ArrayList<>();
+    private List<EnderecoEntity> enderecos = new ArrayList<>();
 
     public PessoaEntity() {}
 
@@ -62,7 +62,7 @@ public class PessoaEntity {
         this.idade = idade;
     }
 
-    public List<EndecoEntity> getEnderecos() {
+    public List<EnderecoEntity> getEnderecos() {
         return enderecos;
     }
 }
