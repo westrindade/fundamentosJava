@@ -1,12 +1,16 @@
 package com.fundamentosjava.primeiroprj.fundamentosjava.domain.services;
 
+import com.fundamentosjava.primeiroprj.fundamentosjava.domain.dtos.EnderecoDto;
+import com.fundamentosjava.primeiroprj.fundamentosjava.domain.dtos.PessoaDto;
+import com.fundamentosjava.primeiroprj.fundamentosjava.domain.entities.CPF;
+import com.fundamentosjava.primeiroprj.fundamentosjava.domain.entities.EnderecoEntity;
 import com.fundamentosjava.primeiroprj.fundamentosjava.domain.entities.PessoaEntity;
 import com.fundamentosjava.primeiroprj.fundamentosjava.domain.repositories.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PessoaService {
@@ -18,25 +22,34 @@ public class PessoaService {
         this.repository = repository;
     }
 
-    public List<PessoaEntity> findAll() {
-        return repository.findAll();
+    public List<PessoaDto> findAll() {
+        return repository.findAll().stream().map(PessoaEntity::toDto).toList();
     }
 
-    public PessoaEntity findById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pessoa Não Existe"));
+    public PessoaDto findById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Pessoa Não Existe")).toDto();
     }
 
-    public PessoaEntity findByIdade(int idade) {
-        return repository.findByIdade(idade)
-                .orElseThrow(() -> new RuntimeException("Idade Não Encontrada"));
+    public PessoaDto findByIdade(int idade) {
+        return repository.findByIdade(idade).orElseThrow(() -> new RuntimeException("Idade Não Encontrada")).toDto();
     }
 
-    public List<PessoaEntity> findByIdadeLessThan(int idade) {
-        return repository.findByIdadeLessThan(idade);
+    public List<PessoaDto> findByIdadeLessThan(int idade) {
+        return repository.findByIdadeLessThan(idade).stream().map(PessoaEntity::toDto).toList();
     }
 
-    public PessoaEntity save(PessoaEntity pessoa){
-        return repository.save(pessoa);
+    public PessoaDto save(PessoaDto pessoaDto){
+        try {
+            PessoaEntity pessoa = pessoaDto.toPessoa();
+            if (!pessoa.getEnderecos().isEmpty()) {
+                for (EnderecoEntity endereco : pessoa.getEnderecos()) {
+                    endereco.setPessoa(pessoa);
+                }
+            }
+
+            return repository.save(pessoa).toDto();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

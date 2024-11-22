@@ -1,5 +1,6 @@
 package com.fundamentosjava.primeiroprj.fundamentosjava.domain.entities;
 
+import com.fundamentosjava.primeiroprj.fundamentosjava.domain.dtos.EnderecoDto;
 import jakarta.persistence.*;
 
 @Table(name = "tb_endereco")
@@ -22,19 +23,23 @@ public class EnderecoEntity {
     @JoinColumn(name = "id_pessoa")
     private PessoaEntity pessoa;
 
-    public EnderecoEntity(){}
+    public EnderecoEntity() { }
 
-    public EnderecoEntity(String cep, PessoaEntity pessoa) throws Exception {
+    public EnderecoEntity(String cep, String logradouro, String cidade, String uf) throws Exception {
+
         if (cep == null){
             throw new Exception("Cep não informado");
         }
 
-        if (pessoa == null) {
-            throw new Exception("Pessoa não informado");
-        }
+//        if (pessoa == null) {
+//            throw new Exception("Pessoa não informado");
+//        }
 
         this.cep = cep;
-        this.pessoa = pessoa;
+        this.logradouro = logradouro;
+        this.cidade = cidade;
+        this.uf = uf;
+//        this.pessoa = pessoa;
     }
 
     public String getCep() {
@@ -45,23 +50,24 @@ public class EnderecoEntity {
         return logradouro;
     }
 
-    public void setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
-    }
-
     public String getCidade() {
         return cidade;
-    }
-
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
     }
 
     public String getUf() {
         return uf;
     }
 
-    public void setUf(String uf) {
-        this.uf = uf;
+    public void setPessoa(PessoaEntity pessoa) {
+        this.pessoa = pessoa;
+    }
+
+    public EnderecoDto toDto(){
+        return new EnderecoDto(
+                this.getCep(),
+                this.getLogradouro(),
+                this.getCidade(),
+                this.getUf()
+        );
     }
 }

@@ -1,5 +1,7 @@
 package com.fundamentosjava.primeiroprj.fundamentosjava.domain.entities;
 
+import com.fundamentosjava.primeiroprj.fundamentosjava.domain.dtos.EnderecoDto;
+import com.fundamentosjava.primeiroprj.fundamentosjava.domain.dtos.PessoaDto;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -18,7 +20,8 @@ public class PessoaEntity {
     private String nome;
 
     @Column(name = "cpf")
-    private String cpf;
+    @Embedded
+    private CPF cpf;
 
     @Column(name = "idade")
     private int idade;
@@ -28,14 +31,17 @@ public class PessoaEntity {
 
     public PessoaEntity() {}
 
-    public PessoaEntity(String nome, String cpf) throws Exception {
+    public PessoaEntity(String nome, CPF cpf, int idade, List<EnderecoEntity> enderecos) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.idade = idade;
+        this.enderecos = enderecos;
+    }
+
+    public PessoaEntity(String nome, CPF cpf) throws Exception {
 
         if (nome == null){
             throw new Exception("Nome é obrigatorio");
-        }
-
-        if (cpf == null) {
-            throw new Exception("CPF é obrigatorio");
         }
 
         this.nome = nome;
@@ -50,7 +56,7 @@ public class PessoaEntity {
         return nome;
     }
 
-    public String getCpf() {
+    public CPF getCpf() {
         return cpf;
     }
 
@@ -64,5 +70,20 @@ public class PessoaEntity {
 
     public List<EnderecoEntity> getEnderecos() {
         return enderecos;
+    }
+
+    public void setEnderecos(List<EnderecoEntity> enderecos) {
+        this.enderecos = enderecos;
+    }
+
+    public PessoaDto toDto() {
+        final List<EnderecoDto> enderecos = this.getEnderecos().stream().map(EnderecoEntity::toDto).toList();
+
+        return new PessoaDto(
+                this.cpf.toString(),
+                this.nome,
+                this.idade,
+                enderecos
+        );
     }
 }

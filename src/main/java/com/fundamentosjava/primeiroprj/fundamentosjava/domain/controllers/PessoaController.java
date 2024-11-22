@@ -1,13 +1,12 @@
-package com.fundamentosjava.primeiroprj.fundamentosjava.domain.controller;
+package com.fundamentosjava.primeiroprj.fundamentosjava.domain.controllers;
 
+import com.fundamentosjava.primeiroprj.fundamentosjava.domain.dtos.PessoaDto;
 import com.fundamentosjava.primeiroprj.fundamentosjava.domain.entities.PessoaEntity;
 import com.fundamentosjava.primeiroprj.fundamentosjava.domain.services.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -69,7 +68,7 @@ public class PessoaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody PessoaEntity pessoa) {
+    public ResponseEntity<?> save(@RequestBody PessoaDto pessoa) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(
                     service.save(pessoa)

@@ -1,7 +1,6 @@
-package com.fundamentosjava.primeiroprj.fundamentosjava.domain.controller;
+package com.fundamentosjava.primeiroprj.fundamentosjava.domain.controllers;
 
 import com.fundamentosjava.primeiroprj.fundamentosjava.domain.entities.EnderecoEntity;
-import com.fundamentosjava.primeiroprj.fundamentosjava.domain.entities.PessoaEntity;
 import com.fundamentosjava.primeiroprj.fundamentosjava.domain.services.EnderecoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
